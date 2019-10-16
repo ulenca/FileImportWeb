@@ -70,7 +70,7 @@ public class Person implements Comparable<Person>{
 	public Integer getPhoneNumber() {
 		return phoneNumber;
 	}
-	
+
 	public int getAge() {
 		return age;
 	}
