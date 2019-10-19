@@ -21,8 +21,11 @@ import org.springframework.web.multipart.MultipartFile;
 
 import general.database.PersonRepository;
 import general.model.Person;
+import general.model.PersonInfo;
 import general.services.FileToObjectListConverter;
 import general.services.FileToPeopleListConverter;
+import general.services.PeopleSearcher;
+import general.services.PeopleWithDuplicatedPhonesSeparator;
 
 @RestController
 @RequestMapping(produces="application/json")
@@ -41,10 +44,15 @@ public class PersonController {
 
 	@GetMapping("/people")
 	public Iterable<Person> listOfPeople(){
-		Iterable<Person> people = personRepo.findAll();
 		logger.info("List of people from db");
-		people.forEach((person)-> logger.info(person.toString()));
+		Iterable<Person> people = personRepo.findAll();
 		return people;
+	}
+	
+	@GetMapping("/peopleInfo")
+	public PersonInfo listOfPeopleInfo(){
+		logger.info("Loading information about people form db");
+		return new PeopleSearcher(personRepo.findAll()).getPersonInfo();
 	}
 	
 	 @PostMapping("/uploadFile")
@@ -54,13 +62,17 @@ public class PersonController {
 		    	logger.info("File format" + file.getContentType());
 		    	
 		    	FileToObjectListConverter<Person> converter = new FileToPeopleListConverter();
-		    	List<Person> peopleFromFile = converter.convertFileToObjectList(file);
+		    	List<Person> peopleFromFile = converter.convertFileToObjectList(file);   
 		    	
-		    	logger.info("List of people from file");
-		    	peopleFromFile.forEach((p) -> logger.info(p.toString()));
-		    	personRepo.saveAll(peopleFromFile);
-		        return new ResponseAfterFileUpload("Successful import", file.getOriginalFilename(), peopleFromFile.size());
+		    	PeopleWithDuplicatedPhonesSeparator separator = new PeopleWithDuplicatedPhonesSeparator();	    	
+		    	List<Person> peopleWithUniquePhones = separator
+		    			.separatePeopleWithUniquePhones(peopleFromFile, personRepo.findAll())
+		    			.get("peopleWithNewPhones");
+		    
+		    	personRepo.saveAll(peopleWithUniquePhones);
+		        return new ResponseAfterFileUpload("Successful import", file.getOriginalFilename(), peopleWithUniquePhones.size());
 		    } catch (Exception e) {
+		    	logger.error(e);
 		        return new ResponseAfterFileUpload("FAIL to upload", file.getOriginalFilename());
 		    }
 		 

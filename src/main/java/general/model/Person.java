@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PostLoad;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
@@ -34,14 +35,13 @@ public class Person implements Comparable<Person>{
 	private Integer phoneNumber;
 	
 	public Person() {
-		
 	}
 	
 	public Person(String firstName, String lastName, LocalDate dateOfBirth) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.dateOfBirth = dateOfBirth;
-		this.age = calculateAge();
+		calculateAge();
 	}
 	
 	public Person(String firstName, String lastName, LocalDate dateOfBirth, int phoneNumber) {
@@ -49,32 +49,51 @@ public class Person implements Comparable<Person>{
 		this.lastName = lastName;
 		this.dateOfBirth = dateOfBirth;
 		this.phoneNumber=phoneNumber;
-		this.age = calculateAge();
+		calculateAge();
 	}
 	
-	private int calculateAge() {
+	@PostLoad
+	private void calculateAge() {
 		if (LocalDate.now().isBefore(dateOfBirth)) {
 			throw new IllegalArgumentException("Wrong date! Person " + this.toString() + "has not been born yet!");
 			}
-		return LocalDate.now().getYear()-dateOfBirth.getYear();
+		this.age = LocalDate.now().getYear()-dateOfBirth.getYear();
 	}
 	
+
 	public String getFirstName() {
 		return firstName;
 	}
-	
+
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+
 	public String getLastName() {
 		return lastName;
 	}
 
-	public Integer getPhoneNumber() {
-		return phoneNumber;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
+	}
+
+	public void setDateOfBirth(LocalDate dateOfBirth) {
+		this.dateOfBirth = dateOfBirth;
 	}
 
 	public int getAge() {
 		return age;
 	}
-	
+
+
+	public Integer getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(Integer phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
 	@Override
 	public int compareTo(Person otherPerson) {
 			return Integer.compare(this.age, otherPerson.age);
@@ -92,7 +111,7 @@ public class Person implements Comparable<Person>{
 		result = prime * result + age;
 		result = prime * result + ((firstName == null) ? 0 : firstName.hashCode());
 		result = prime * result + ((lastName == null) ? 0 : lastName.hashCode());
-		result = prime * result + phoneNumber;
+		result = prime * result + ((phoneNumber == null) ? 0 : phoneNumber.hashCode());
 		return result;
 	}
 
@@ -117,10 +136,15 @@ public class Person implements Comparable<Person>{
 				return false;
 		} else if (!lastName.equals(other.lastName))
 			return false;
-		if (phoneNumber != other.phoneNumber)
+		if (phoneNumber == null) {
+			if (other.phoneNumber != null)
+				return false;
+		} else if (!phoneNumber.equals(other.phoneNumber))
 			return false;
 		return true;
 	}
+
+
 
 	
 	
