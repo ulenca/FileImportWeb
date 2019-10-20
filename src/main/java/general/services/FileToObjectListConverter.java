@@ -5,8 +5,10 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import general.model.ConversionResult;
+
 public interface FileToObjectListConverter<T> {
 	
-	public List<T> convertFileToObjectList(MultipartFile file) throws IOException;
+	public List<ConversionResult<T>> convertFileToResultList(MultipartFile file) throws IOException;
 
 }

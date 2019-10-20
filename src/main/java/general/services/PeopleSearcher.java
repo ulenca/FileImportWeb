@@ -27,8 +27,6 @@ public class PeopleSearcher {
 				findTheOldestPersonWithPhoneNumber(listOfPeople),
 				sortPeopleAccordingToAge(listOfPeople)
 				);
-		
-		personInfo.getSortedListAccordingToAge().forEach((person)->System.out.println(person.toString()));
 	}
 	
 	public long countPeople(Iterable<Person> listOfPeople) {	

@@ -37,14 +37,7 @@ public class Person implements Comparable<Person>{
 	public Person() {
 	}
 	
-	public Person(String firstName, String lastName, LocalDate dateOfBirth) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.dateOfBirth = dateOfBirth;
-		calculateAge();
-	}
-	
-	public Person(String firstName, String lastName, LocalDate dateOfBirth, int phoneNumber) {
+	public Person(String firstName, String lastName, LocalDate dateOfBirth, Integer phoneNumber) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.dateOfBirth = dateOfBirth;
@@ -59,7 +52,10 @@ public class Person implements Comparable<Person>{
 			}
 		this.age = LocalDate.now().getYear()-dateOfBirth.getYear();
 	}
-	
+		
+	public long getId() {
+		return id;
+	}
 
 	public String getFirstName() {
 		return firstName;

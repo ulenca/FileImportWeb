@@ -1,17 +1,19 @@
-package general.rest_api;
+package general.model;
+
+import java.util.List;
 
 public class ResponseAfterFileUpload {
-	
-	//TODO dodać błędy formatowania pliku
 	
 	private String message;
 	private String fileName;
 	private int numberOfPeople;
+	private List<String> failures;
 	
-	public ResponseAfterFileUpload(String message, String fileName, int numberOfPeople) {
+	public ResponseAfterFileUpload(String message, String fileName, int numberOfPeople, List<String> failures) {
 		this.message = message;
 		this.fileName = fileName;
 		this.numberOfPeople = numberOfPeople;
+		this.failures = failures;
 	}
 
 	public ResponseAfterFileUpload(String message, String fileName) {
@@ -32,7 +34,7 @@ public class ResponseAfterFileUpload {
 		return numberOfPeople;
 	}
 
-	
-	
-
+	public List<String> getFailures() {
+		return failures;
+	}
 }

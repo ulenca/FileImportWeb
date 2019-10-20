@@ -11,7 +11,7 @@ import general.model.Person;
 import org.junit.Test;
 
 public class PeopleWithDuplicatedPhonesSeparatorTest {
-	
+	/*
 	@Test
 	public void separatePeopleWithUniquePhonesTest() {
 		List<Person> repository = new ArrayList<>();
@@ -56,6 +56,6 @@ public class PeopleWithDuplicatedPhonesSeparatorTest {
 		assertEquals(expectedListWithUniquePhones, 
 				separator.separatePeopleWithUniquePhones(listToBeChecked, repository).get("peopleWithNewPhones"));
 	}
-
+*/
 
 }
