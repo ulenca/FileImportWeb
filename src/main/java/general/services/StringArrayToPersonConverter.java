@@ -1,9 +1,7 @@
 package general.services;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -19,13 +17,8 @@ public class StringArrayToPersonConverter {
 		
 		logger.info("Converting strings to people");
 		List<Person> people = new ArrayList<>();
-		
-			
-		
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
-			
-		for (String[] row:listOfStrings) {	
-			
+					
+		for (String[] row:listOfStrings) {			
 			Integer phoneNumber = null;
 					
 			if(ConversionTools.isPhonePresent(row)) {
@@ -35,19 +28,12 @@ public class StringArrayToPersonConverter {
 			people.add(new Person(
 					row[0], 
 					row[1],
-					LocalDate.parse(row[2], formatter),
+					LocalDate.parse(row[2], ConversionTools.formatter),
 					phoneNumber));
 		}	
 		logger.info("Finished conversion of strings to people. Got " + 
 				people.size() + " people.");
 			
-		return people;
-
-		
-	}
-	
-
-	
-
-	
+		return people;		
+	}	
 }

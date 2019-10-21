@@ -27,15 +27,15 @@ public class DataSearcherTest {
     	resultofSerchByTestMethod.clear();
     }
     
-/*	
+
 	@Test
 	public void findTheOldestPersonWithPhoneNumberHappyPathTest() {
 		
 		listOfPeople.add(new Person("Agnieszka","Radwańska",LocalDate.parse("1989-03-28"),785236956));		
-		listOfPeople.add(new Person("Jerzy","Grop",LocalDate.parse("1999-12-04")));
+		listOfPeople.add(new Person("Jerzy","Grop",LocalDate.parse("1999-12-04"),null));
 		listOfPeople.add(new Person("Aneta","Paszkowska",LocalDate.parse("2000-01-01"),483772909));
-		listOfPeople.add(new Person("Artur","Boruc",LocalDate.parse("1968-02-22")));
-		listOfPeople.add(new Person("Anna","Paszkowska",LocalDate.parse("1955-11-30")));
+		listOfPeople.add(new Person("Artur","Boruc",LocalDate.parse("1968-02-22"),null));
+		listOfPeople.add(new Person("Anna","Paszkowska",LocalDate.parse("1955-11-30"),null));
 		listOfPeople.add(new Person("Weronika","Lubicz",LocalDate.parse("1946-04-01"),876456001));
 		listOfPeople.add(new Person("Adam","Poręba",LocalDate.parse("1890-03-04"),909890988));
 		
@@ -55,10 +55,10 @@ public class DataSearcherTest {
 	public void findTheOldestPeopleWithPhoneNumberHappyPathTest() {
 		
 		listOfPeople.add(new Person("Agnieszka","Radwańska",LocalDate.parse("1989-03-28"),785236956));		
-		listOfPeople.add(new Person("Jerzy","Grop",LocalDate.parse("1999-12-04")));
+		listOfPeople.add(new Person("Jerzy","Grop",LocalDate.parse("1999-12-04"),null));
 		listOfPeople.add(new Person("Aneta","Paszkowska",LocalDate.parse("1890-01-01"),483772909));
-		listOfPeople.add(new Person("Artur","Boruc",LocalDate.parse("1968-02-22")));
-		listOfPeople.add(new Person("Anna","Paszkowska",LocalDate.parse("1890-11-30")));
+		listOfPeople.add(new Person("Artur","Boruc",LocalDate.parse("1968-02-22"),null));
+		listOfPeople.add(new Person("Anna","Paszkowska",LocalDate.parse("1890-11-30"),null));
 		listOfPeople.add(new Person("Weronika","Lubicz",LocalDate.parse("1946-04-01"),876456001));
 		listOfPeople.add(new Person("Adam","Poręba",LocalDate.parse("1890-03-04"),909890988));
 		listOfPeople.add(new Person("Aga","Jaremko",LocalDate.parse("1890-01-01"),483771909));
@@ -80,10 +80,10 @@ public class DataSearcherTest {
 	@Test 
 	public void findTheOldestPeopleWithPhoneNumberNoSuchPeopleTest(){
 		
-		listOfPeople.add(new Person("Agnieszka","Radwańska",LocalDate.parse("1989-03-28")));		
-		listOfPeople.add(new Person("Jerzy","Grop",LocalDate.parse("1999-12-04")));
-		listOfPeople.add(new Person("Aneta","Paszkowska",LocalDate.parse("1890-01-01")));
-		listOfPeople.add(new Person("Artur","Boruc",LocalDate.parse("1968-02-22")));
+		listOfPeople.add(new Person("Agnieszka","Radwańska",LocalDate.parse("1989-03-28"),null));		
+		listOfPeople.add(new Person("Jerzy","Grop",LocalDate.parse("1999-12-04"),null));
+		listOfPeople.add(new Person("Aneta","Paszkowska",LocalDate.parse("1890-01-01"),null));
+		listOfPeople.add(new Person("Artur","Boruc",LocalDate.parse("1968-02-22"),null));
 		
 		resultofSerchByTestMethod = dataSearcher.findTheOldestPersonWithPhoneNumber(listOfPeople);
 		
@@ -109,33 +109,5 @@ public class DataSearcherTest {
 		assertEquals(expectedSet, resultofSerchByTestMethodUnordered);
 		finalize();
 	}
-	
-	@Test 
-	public void sortPeopleAccordingToAgeTest() {
-		
-		listOfPeople.add(new Person("Agnieszka","Radwańska",LocalDate.parse("1989-03-28")));		
-		listOfPeople.add(new Person("Jerzy","Grop",LocalDate.parse("1999-12-04")));
-		listOfPeople.add(new Person("Aneta","Paszkowska",LocalDate.parse("2000-01-01"),483772909));
-		listOfPeople.add(new Person("Artur","Boruc",LocalDate.parse("1968-02-22")));
-		listOfPeople.add(new Person("Anna","Paszkowska",LocalDate.parse("1955-11-30")));
-		listOfPeople.add(new Person("Weronika","Lubicz",LocalDate.parse("1946-04-01")));
-		listOfPeople.add(new Person("Adam","Poręba",LocalDate.parse("1890-03-04"),909890988));
-		
-		List<Person> expectedList = new ArrayList<>();
-		
-		expectedList.add(new Person("Adam","Poręba",LocalDate.parse("1890-03-04"),909890988));
-		expectedList.add(new Person("Weronika","Lubicz",LocalDate.parse("1946-04-01")));
-		expectedList.add(new Person("Anna","Paszkowska",LocalDate.parse("1955-11-30")));
-		expectedList.add(new Person("Artur","Boruc",LocalDate.parse("1968-02-22")));
-		expectedList.add(new Person("Agnieszka","Radwańska",LocalDate.parse("1989-03-28")));	
-		expectedList.add(new Person("Jerzy","Grop",LocalDate.parse("1999-12-04")));
-		expectedList.add(new Person("Aneta","Paszkowska",LocalDate.parse("2000-01-01"),483772909));
-		
-		resultofSerchByTestMethod = dataSearcher.sortPeopleAccordingToAge(listOfPeople);
-
-		assertEquals(expectedList, resultofSerchByTestMethod);
-		finalize();
-	}
-	*/
 
 }

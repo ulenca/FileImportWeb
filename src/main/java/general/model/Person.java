@@ -38,6 +38,14 @@ public class Person implements Comparable<Person>{
 	}
 	
 	public Person(String firstName, String lastName, LocalDate dateOfBirth, Integer phoneNumber) {
+		
+		if (LocalDate.now().isBefore(dateOfBirth)) {
+			throw new IllegalArgumentException("Wrong date! Must be from the past!");
+			}
+		if (phoneNumber!=null && String.valueOf(phoneNumber).length()!=9) {
+			throw new IllegalArgumentException("Phone number must have 9 digits");
+			}
+		
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.dateOfBirth = dateOfBirth;
@@ -47,9 +55,6 @@ public class Person implements Comparable<Person>{
 	
 	@PostLoad
 	private void calculateAge() {
-		if (LocalDate.now().isBefore(dateOfBirth)) {
-			throw new IllegalArgumentException("Wrong date! Person " + this.toString() + "has not been born yet!");
-			}
 		this.age = LocalDate.now().getYear()-dateOfBirth.getYear();
 	}
 		
@@ -71,10 +76,6 @@ public class Person implements Comparable<Person>{
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
-	}
-
-	public void setDateOfBirth(LocalDate dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
 	}
 
 	public int getAge() {

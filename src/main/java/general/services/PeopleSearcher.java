@@ -1,8 +1,6 @@
 package general.services;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
@@ -20,24 +18,17 @@ public class PeopleSearcher {
 		
 	}
 	
-	public PeopleSearcher(Iterable<Person> listOfPeople) {
+	public PeopleSearcher(Iterable<Person> listOfPeople, Iterable<Person> pagedResults) {
 
 		this.personInfo = new PersonInfo(
 				countPeople(listOfPeople),
 				findTheOldestPersonWithPhoneNumber(listOfPeople),
-				sortPeopleAccordingToAge(listOfPeople)
+				pagedResults
 				);
 	}
 	
 	public long countPeople(Iterable<Person> listOfPeople) {	
 		return StreamSupport.stream(listOfPeople.spliterator(), false).count();
-	}
-	
-	public List<Person> sortPeopleAccordingToAge(Iterable<Person> listOfPeople){
-
-		return 	StreamSupport.stream(listOfPeople.spliterator(), false)
-				.sorted(Comparator.reverseOrder())
-				.collect(Collectors.toList());
 	}
 	
 	public List<Person> findTheOldestPersonWithPhoneNumber(Iterable<Person> listOfPeople) {

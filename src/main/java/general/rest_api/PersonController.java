@@ -1,19 +1,16 @@
 package general.rest_api;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.EntityLinks;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import general.database.PersonRepository;
+import general.database.PersonRepositoryPageable;
 import general.model.ConversionResult;
 import general.model.Person;
 import general.model.PersonInfo;
@@ -41,21 +39,24 @@ public class PersonController {
 
 	private static Logger logger = LogManager.getLogger(PersonController.class);
 	private PersonRepository personRepo;
+	private PersonRepositoryPageable personRepoWithPaging;
 	
 	@Autowired
 	EntityLinks entityLinks;
 
-	public PersonController(PersonRepository personRepo) {
+	public PersonController(PersonRepository personRepo, PersonRepositoryPageable personRepoWithPaging) {
 		this.personRepo = personRepo;
+		this.personRepoWithPaging = personRepoWithPaging;
 	}
 	
 	@GetMapping("/peopleInfo")
-	public PersonInfo listOfPeopleInfo(){
+	public PersonInfo listOfPeopleInfo(@RequestParam("page") int page){
 		logger.info("Loading information about people form db");
-		return new PeopleSearcher(personRepo.findAll()).getPersonInfo();
+		PageRequest pageRequest = PageRequest.of(page, 5, Sort.by("dateOfBirth").ascending());
+		return new PeopleSearcher(personRepo.findAll(), personRepoWithPaging.findAll(pageRequest)).getPersonInfo();
 	}
 	
-	@GetMapping("/people")
+	@GetMapping("/peopleByName")
 	public Iterable<Person> listOfPeopleFilteredByLastName(@RequestParam String lastName){
 		logger.info("List of people with given last name");
 		Iterable<Person> people = personRepo.findByLastName(lastName);
@@ -76,28 +77,17 @@ public class PersonController {
 		    			.collect(Collectors.toList());
 		    	
 		    	StringArrayToPersonConverter stringToPersonConverter = new StringArrayToPersonConverter(); 	
-		    	List<Person> peopleFromFile = stringToPersonConverter.convertStringArrayToPeople(listOfFineRows);
-		    	
+		    	List<Person> peopleFromFile = stringToPersonConverter.convertStringArrayToPeople(listOfFineRows); 	
 		    	PeopleWithDuplicatedPhonesSeparator separator = new PeopleWithDuplicatedPhonesSeparator();	
 		    	Map<String, List<Person>> listOfPeople = separator.separatePeopleWithUniquePhones(peopleFromFile, personRepo.findAll());
 		    	List<Person> peopleWithUniquePhones = listOfPeople.get("peopleWithNewPhones");
-		        List<Person> peopleWithDuplicates = listOfPeople.get("peopleWithDuplicatedPhones");
-		    	
-		    	List<String> failures = new ArrayList<>();
-		    	
-		    	failures.addAll(resultsAfterConversion.stream()
-		    			.filter(r -> !r.isSucceeded())
-		    			.map(s->s.getErrorMessage())
-		    			.collect(Collectors.toList()));
-		    	
-
-		    	failures.addAll(peopleWithDuplicates.stream()
-		    			.map(person->new String("Person with given phone already exists in db "
-				    			+ "or there are duplicates within a file: " + person.toString()))
-		    			.collect(Collectors.toList()));
-		    
 		    	personRepo.saveAll(peopleWithUniquePhones);
-		        return new ResponseAfterFileUpload("Successful import", file.getOriginalFilename(), peopleWithUniquePhones.size(), failures);
+		    	List<Person> peopleWithDuplicates = listOfPeople.get("peopleWithDuplicatedPhones");
+		    	
+		    	return new ResponseAfterFileUpload("Successful import", 
+		        		file.getOriginalFilename(), 
+		        		peopleWithUniquePhones.size(), 
+		        		collectFailures(resultsAfterConversion, peopleWithDuplicates));
 		    } catch (Exception e) {
 		    	logger.error(e);
 		        return new ResponseAfterFileUpload("FAIL to upload: " + e.getMessage(), file.getOriginalFilename());
@@ -117,6 +107,23 @@ public class PersonController {
 			logger.info("About to delete all people from the list");
 			personRepo.deleteAll();
 			return "All people were deleted from db";
+		}
+		
+		private List<String> collectFailures(List<ConversionResult<String[]>> resultsAfterConversion, List<Person> peopleWithDuplicates){
+	    	List<String> failures = new ArrayList<>();
+	    	
+	    	failures.addAll(resultsAfterConversion.stream()
+	    			.filter(r -> !r.isSucceeded())
+	    			.map(s->s.getErrorMessage())
+	    			.collect(Collectors.toList()));
+	    	
+
+	    	failures.addAll(peopleWithDuplicates.stream()
+	    			.map(person->new String("Person with given phone already exists in db "
+			    			+ "or there are duplicates within a file: " + person.toString()))
+	    			.collect(Collectors.toList()));
+	    	
+	    	return failures;
 		}
 
 }

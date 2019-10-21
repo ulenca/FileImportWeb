@@ -6,9 +6,9 @@ public class PersonInfo {
 	
 	private long numberOfPeople;
 	private List<Person> theOldestPeopleWithPhone;
-	private List<Person> sortedListAccordingToAge;
+	private Iterable<Person> sortedListAccordingToAge;
 
-	public PersonInfo(long numberOfPeople, List<Person> theOldestPeopleWithPhone, List<Person> sortedListAccordingToAge) {
+	public PersonInfo(long numberOfPeople, List<Person> theOldestPeopleWithPhone, Iterable<Person> sortedListAccordingToAge) {
 		this.numberOfPeople = numberOfPeople;
 		this.theOldestPeopleWithPhone = theOldestPeopleWithPhone;
 		this.sortedListAccordingToAge = sortedListAccordingToAge;
@@ -22,7 +22,7 @@ public class PersonInfo {
 		return theOldestPeopleWithPhone;
 	}
 
-	public List<Person> getSortedListAccordingToAge() {
+	public Iterable<Person> getSortedListAccordingToAge() {
 		return sortedListAccordingToAge;
 	}
 }

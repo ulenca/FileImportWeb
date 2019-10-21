@@ -11,7 +11,7 @@ import general.model.Person;
 import org.junit.Test;
 
 public class PeopleWithDuplicatedPhonesSeparatorTest {
-	/*
+	
 	@Test
 	public void separatePeopleWithUniquePhonesTest() {
 		List<Person> repository = new ArrayList<>();
@@ -33,8 +33,8 @@ public class PeopleWithDuplicatedPhonesSeparatorTest {
 		listToBeChecked.add(new Person("rzy","Gop",LocalDate.parse("1968-12-04"), 878656344));
 		listToBeChecked.add(new Person("Ana","Paszwska",LocalDate.parse("2000-01-01"),481772909));
 		listToBeChecked.add(new Person("Aa","Paszska",LocalDate.parse("1955-11-30"),333236956));
-		listToBeChecked.add(new Person("Luk","Pasfffka",LocalDate.parse("1955-11-30")));
-		listToBeChecked.add(new Person("Luk","Pasfffka",LocalDate.parse("1955-11-30")));
+		listToBeChecked.add(new Person("Luk","Pasfffka",LocalDate.parse("1955-11-30"),null));
+		listToBeChecked.add(new Person("Luk","Pasfffka",LocalDate.parse("1955-11-30"),null));
 	
 		
 		List<Person> expectedListWithUniquePhones = new ArrayList<>();
@@ -47,8 +47,8 @@ public class PeopleWithDuplicatedPhonesSeparatorTest {
 		expectedListWithUniquePhones.add(new Person("Ad","Poba",LocalDate.parse("1890-03-04"),901890988));
 		expectedListWithUniquePhones.add(new Person("Agnka","Radwka",LocalDate.parse("1989-03-28"),333236956));
 		expectedListWithUniquePhones.add(new Person("Ana","Paszwska",LocalDate.parse("2000-01-01"),481772909));
-		expectedListWithUniquePhones.add(new Person("Luk","Pasfffka",LocalDate.parse("1955-11-30")));
-		expectedListWithUniquePhones.add(new Person("Luk","Pasfffka",LocalDate.parse("1955-11-30")));
+		expectedListWithUniquePhones.add(new Person("Luk","Pasfffka",LocalDate.parse("1955-11-30"),null));
+		expectedListWithUniquePhones.add(new Person("Luk","Pasfffka",LocalDate.parse("1955-11-30"),null));
 		
 		PeopleWithDuplicatedPhonesSeparator separator = new PeopleWithDuplicatedPhonesSeparator();
 		assertEquals(expectedListWithDuplicates, 
@@ -56,6 +56,6 @@ public class PeopleWithDuplicatedPhonesSeparatorTest {
 		assertEquals(expectedListWithUniquePhones, 
 				separator.separatePeopleWithUniquePhones(listToBeChecked, repository).get("peopleWithNewPhones"));
 	}
-*/
+
 
 }
