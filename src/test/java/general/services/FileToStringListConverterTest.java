@@ -3,7 +3,6 @@ package general.services;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,14 +11,12 @@ import org.junit.Test;
 import org.springframework.mock.web.MockMultipartFile;
 
 import general.model.ConversionResult;
-import general.model.Person;
 
 public class FileToStringListConverterTest {
 
 	@Test
 	public void convertFileToStringList() {
 		
-		FileToStringListConverter converter = new FileToStringListConverter();
 		MockMultipartFile multipartFile = new MockMultipartFile(
 				"testCSV", 
 				("first_name;last_name;birth_date;phone_no\r\n" + 

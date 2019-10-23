@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ import general.model.ConversionResult;
 import general.model.Person;
 import general.model.PersonInfo;
 import general.model.ResponseAfterFileUpload;
+import general.model.ResponseAfterPostDelete;
 import general.services.FileToObjectListConverter;
 import general.services.FileToStringListConverter;
 import general.services.PeopleSearcher;
@@ -64,7 +67,7 @@ public class PersonController {
 	}
 	
 	 @PostMapping("/uploadFile")
-	 public ResponseAfterFileUpload uploadCSV(@RequestParam("file") MultipartFile file){
+	 public ResponseAfterFileUpload uploadCSV(@RequestParam("file") MultipartFile file, HttpServletResponse response){
 		    try {
 		    	logger.info("File size: " + file.getSize() + "File format" + file.getContentType());		    
 		    	
@@ -83,30 +86,30 @@ public class PersonController {
 		    	List<Person> peopleWithUniquePhones = listOfPeople.get("peopleWithNewPhones");
 		    	personRepo.saveAll(peopleWithUniquePhones);
 		    	List<Person> peopleWithDuplicates = listOfPeople.get("peopleWithDuplicatedPhones");
-		    	
 		    	return new ResponseAfterFileUpload("Successful import", 
 		        		file.getOriginalFilename(), 
 		        		peopleWithUniquePhones.size(), 
 		        		collectFailures(resultsAfterConversion, peopleWithDuplicates));
 		    } catch (Exception e) {
 		    	logger.error(e);
+		    	response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 		        return new ResponseAfterFileUpload("FAIL to upload: " + e.getMessage(), file.getOriginalFilename());
 		    }
 		 
 	 }
 	 
 		@DeleteMapping("/deletePerson")
-		public String deleteOnePerson(@RequestParam Long id){
+		public ResponseAfterPostDelete deleteOnePerson(@RequestParam Long id){
 			logger.info("About to delete person with id " +id);
 			personRepo.deleteById(id);
-			return "Person with id=" + id + "was deleted from db";
+			return new ResponseAfterPostDelete("Person with id=" + id + " was deleted from db");
 		}
 		
 		@DeleteMapping("/deleteAll")
-		public String deleteAll(){
+		public ResponseAfterPostDelete deleteAll(){
 			logger.info("About to delete all people from the list");
 			personRepo.deleteAll();
-			return "All people were deleted from db";
+			return new ResponseAfterPostDelete("All people were deleted from db");
 		}
 		
 		private List<String> collectFailures(List<ConversionResult<String[]>> resultsAfterConversion, List<Person> peopleWithDuplicates){

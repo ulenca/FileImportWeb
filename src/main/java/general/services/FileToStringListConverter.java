@@ -32,7 +32,7 @@ public class FileToStringListConverter implements FileToObjectListConverter<Stri
 	}
 
 	private List<String[]> getListOfStrings(MultipartFile file) throws IOException{	
-		logger.info("Trying to get list of strings");
+		logger.info("Parsing file. Trying to get list of strings ou of file");
 		Reader reader = new InputStreamReader(file.getInputStream());
 		
 		CSVParser parser = new CSVParserBuilder()
@@ -59,7 +59,7 @@ public class FileToStringListConverter implements FileToObjectListConverter<Stri
 		
 	
 	private List<ConversionResult<String[]>> filterProblematicStrings(List<String[]> listOfStrings) {
-
+		logger.info("Going to convert list of strings to people");
 		List<ConversionResult<String[]>> conversionResults = new ArrayList<>();
 		
 		for(String[] row:listOfStrings) {

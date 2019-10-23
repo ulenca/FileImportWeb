@@ -2,27 +2,22 @@ package general.model;
 
 import java.util.List;
 
-public class ResponseAfterFileUpload {
+public class ResponseAfterFileUpload extends ResponseAfterPostDelete{
 	
-	private String message;
 	private String fileName;
 	private int numberOfPeople;
 	private List<String> failures;
 	
 	public ResponseAfterFileUpload(String message, String fileName, int numberOfPeople, List<String> failures) {
-		this.message = message;
+		super(message);
 		this.fileName = fileName;
 		this.numberOfPeople = numberOfPeople;
 		this.failures = failures;
 	}
 
 	public ResponseAfterFileUpload(String message, String fileName) {
-		this.message = message;
+		super(message);
 		this.fileName = fileName;
-	}
-
-	public String getMessage() {
-		return message;
 	}
 
 	public String getFileName() {

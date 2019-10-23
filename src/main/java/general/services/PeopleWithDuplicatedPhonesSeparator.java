@@ -11,10 +11,10 @@ import java.util.stream.StreamSupport;
 import general.model.Person;
 
 public class PeopleWithDuplicatedPhonesSeparator {
-	
-	
+
 	public Map<String, List<Person>> separatePeopleWithUniquePhones(
-			List<Person> peopleWithPotentiallyDuplicatePhones, Iterable<Person> peopleRepositoryWithUniquePhones){
+					
+		List<Person> peopleWithPotentiallyDuplicatePhones, Iterable<Person> peopleRepositoryWithUniquePhones){
 			
 		List<Person> peopleWithDuplicatedPhones = new ArrayList<>();
 		List<Person> peopleWithNewPhones = new ArrayList<>();	

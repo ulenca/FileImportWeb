@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
+	<title>File import web</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+   <noscript>
+        <h2>Sorry! Your browser doesn't support Javascript</h2>
+   </noscript>
+ 
+   
+    <h2>File Upload</h2>
+
+    <form id="uploadForm" name="uploadForm">
+		<input id="uploadInput" type="file" name="file" class="custom-file-input" required />
+	    <button type="submit" class="btn-primary">Submit</button>
+    </form>
+    <div class="upload-response">
+        <div id="Error"></div>
+        <div id="Success"></div>
+    </div>
+       
+    <div id="uploadSuccess" class="alert alert-success" role="alert" hidden="hidden">
+          <button type="button" class="close" aria-label="Close" data-hide="alert"><span aria-hidden="true">&times;</span></button>
+    	  Successful import
+  		  <hr>
+ 		  <p id = "pNumberOfRecords" class="mb-0"></p>
+	</div>
+	
+    <div id="uploadWarning" class="alert alert-warning"  role="alert" hidden="hidden">
+      	<button type="button" class="close" aria-label="Close" data-hide="alert"><span aria-hidden="true">&times;</span></button>
+		There were following failures with row conversions:
+		  <hr>
+ 		  <p id = "pNumberOfFailures" class="mb-0"></p>
+ 		  <p id = "pFailures" class="mb-0"> </p>
+	</div>  
+	
+	<div id="uploadError" class="alert alert-danger"  role="alert" hidden="hidden">
+		  <button type="button" class="close" aria-label="Close" data-hide="alert"><span aria-hidden="true">&times;</span></button>
+	      <p id = "pError" class="mb-0"> </p>
+	</div>   
+	 
+    <h2>List of people</h2>
+    
+    <form id="searchForm" class="form-inline" >
+	  		<input id="lastName" type="text" class="form-control" placeholder="Last name">
+	   		<button id="search" class="btn btn-outline-sec
+	   		ondary" type="button" onclick="searchPeople(document.getElementById('lastName').value)">Search</button>
+    </form>
+
+    <div id="peopleInfo">
+    </div>    
+    
+    <table id="dataTable" class="table">
+    	<thead>
+			<tr>
+			    <th>Id</th>
+			    <th>Firstname</th>
+			    <th>Lastname</th>
+			    <th>Age</th>
+			    <th>Phone</th>
+			    <th>Delete person</th>
+			</tr>
+  		</thead>
+	  	<tbody>
+	  	</tbody>
+    </table>
+    
+    <nav aria-label="Page navigation">
+  		<ul class="pagination" id="pages">
+  		</ul>
+  	</nav>
+    
+    <div id="summary">
+	</div>
+    
+    <br><br><button id="deleteAll" class="btn btn-danger" type="button" onclick="deleteAll()">Delete all people</button>
+    
+    <script src="/js/main.js"></script>
+    
+</body>
+</html>
